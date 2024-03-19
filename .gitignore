@@ -1,5 +1,5 @@
 *.zip
 ./part1
-./policy_enforcment_assessment
+./policy_enforcement_assessment
 ./venv
 ./.pytest_cache

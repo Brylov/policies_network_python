@@ -1,6 +1,3 @@
-Here's a basic README.md for your Flask app:
-
----
 
 # Policy Management App
 
