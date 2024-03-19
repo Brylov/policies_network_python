@@ -23,7 +23,7 @@ To install and run the application locally, follow these steps:
 
 2. Navigate to the project directory:
     ```bash
-    cd policy-management-app
+    cd policies_network_python
     ```
 
 3. Install the required dependencies using pip:
