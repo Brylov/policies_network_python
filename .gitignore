@@ -1,0 +1,5 @@
+*.zip
+./part1
+./policy_enforcment_assessment
+./venv
+./.pytest_cache

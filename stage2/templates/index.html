@@ -1,0 +1,168 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy API Test</title>
+</head>
+<body>
+    <h1>Policy API Test</h1>
+    <h2>Create Policy</h2>
+    <div id="errorMessageCreate" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <form id="createPolicyForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" required><br><br>
+        <label for="type">Type:</label>
+        <input type="text" id="type" name="type" required><br><br>
+        <button type="submit">Create Policy</button>
+    </form>
+
+    <h2>List Policies</h2>
+    <div id="errorMessagelist" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <button id="listPoliciesBtn">List Policies</button>
+    <ul id="policyList"></ul>
+
+    <h2>Read Policy</h2>
+    <div id="errorMessageRead" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <form id="readPolicyForm">
+        <label for="policyId">Policy ID:</label>
+        <input type="text" id="policyId" name="policyId" required><br><br>
+        <button type="submit">Read Policy</button>
+    </form>
+    <div id="readPolicyResult"></div>
+
+    <h2>Update Policy</h2>
+    <div id="errorMessageUpdate" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <form id="updatePolicyForm">
+        <label for="updatePolicyId">Policy ID:</label>
+        <input type="text" id="updatePolicyId" name="updatePolicyId" required><br><br>
+        <label for="updateName">New Name:</label>
+        <input type="text" id="updateName" name="updateName" required><br><br>
+        <label for="updateDescription">New Description:</label>
+        <input type="text" id="updateDescription" name="updateDescription" required><br><br>
+        <label for="updateType">New Type:</label>
+        <input type="text" id="updateType" name="updateType" required><br><br>
+        <button type="submit">Update Policy</button>
+    </form>
+
+    <h2>Delete Policy</h2>
+    <div id="errorMessageDelete" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <form id="deletePolicyForm">
+        <label for="deletePolicyId">Policy ID:</label>
+        <input type="text" id="deletePolicyId" name="deletePolicyId" required><br><br>
+        <button type="submit">Delete Policy</button>
+    </form>
+
+    <script>
+        document.getElementById('createPolicyForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const type = document.getElementById('type').value;
+            const response = await fetch('/create_policy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    description: description,
+                    type: type
+                })
+            });
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                document.getElementById('errorMessageCreate').textContent = 'Error: ' + errorMessage;
+                return; // Stop further execution
+            }
+            const data = await response.json();
+            alert('Policy created with ID: ' + data.policy_id);
+            document.getElementById('name').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('type').value = '';
+            document.getElementById('errorMessageCreate').textContent = ''; // Clear error message
+        });
+
+        document.getElementById('listPoliciesBtn').addEventListener('click', async function() {
+            const response = await fetch('/list_policies');
+            if (!response.ok) {
+                document.getElementById('policyList').innerHTML = '';
+                const errorMessage = await response.text();
+                document.getElementById('errorMessagelist').textContent = 'Error: ' + errorMessage;
+                return; // Stop further execution
+            }
+            const policies = await response.json();
+            const policyList = document.getElementById('policyList');
+            policyList.innerHTML = '';
+            policies.forEach(policy => {
+                const li = document.createElement('li');
+                li.textContent = `ID: ${policy.id}, Name: ${policy.name}, Description: ${policy.description}, Type: ${policy.type}`;
+                policyList.appendChild(li);
+            });
+            document.getElementById('errorMessagelist').textContent = ''; // Clear error message           
+        });
+
+        document.getElementById('readPolicyForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const policyId = document.getElementById('policyId').value;
+            const response = await fetch(`/read_policy?id=${policyId}`);
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                document.getElementById('errorMessageRead').textContent = 'Error: ' + errorMessage;
+                document.getElementById('readPolicyResult').textContent = ''; // Clear read policy result
+                return; // Stop further execution
+            }
+            const policy = await response.json();
+            document.getElementById('readPolicyResult').textContent = `ID: ${policy.id}, Name: ${policy.name}, Description: ${policy.description}, Type: ${policy.type}`;
+            document.getElementById('errorMessageRead').textContent = ''; // Clear error message
+        });
+
+        document.getElementById('updatePolicyForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const policyId = document.getElementById('updatePolicyId').value;
+            const newName = document.getElementById('updateName').value;
+            const newDescription = document.getElementById('updateDescription').value;
+            const newType = document.getElementById('updateType').value;
+            const response = await fetch(`/update_policy?id=${policyId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: newName,
+                    description: newDescription,
+                    type: newType
+                })
+            });
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                document.getElementById('errorMessageUpdate').textContent = 'Error: ' + errorMessage;
+                return; // Stop further execution
+            }
+            alert('Policy updated successfully');
+            document.getElementById('updatePolicyId').value = '';
+            document.getElementById('updateName').value = '';
+            document.getElementById('updateDescription').value = '';
+            document.getElementById('updateType').value = '';
+            document.getElementById('errorMessageUpdate').textContent = ''; // Clear error message
+        });
+
+        document.getElementById('deletePolicyForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const policyId = document.getElementById('deletePolicyId').value;
+            const response = await fetch(`/delete_policy?id=${policyId}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                document.getElementById('errorMessageDelete').textContent = 'Error: ' + errorMessage;
+                return; // Stop further execution
+            }
+            alert('Policy deleted successfully');
+            document.getElementById('deletePolicyId').value = '';
+            document.getElementById('errorMessageDelete').textContent = ''; //
+        });
+    </script>
+</body>
+</html>

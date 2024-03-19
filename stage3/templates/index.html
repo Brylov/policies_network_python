@@ -1,0 +1,550 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy API Test</title>
+</head>
+<body>
+    <h1>Policy API Test</h1>
+    <h2>Create Policy</h2>
+    <div id="errorMessageCreate" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <form id="createPolicyForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" required><br><br>
+        <label for="type">Type:</label>
+        <input type="text" id="type" name="type" required><br><br>
+        <button type="submit">Create Policy</button>
+    </form>
+
+    <h2>List Policies</h2>
+    <div id="errorMessagelist" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <button id="listPoliciesBtn">List Policies</button>
+    <ul id="policyList"></ul>
+
+    <h2>Read Policy</h2>
+    <div id="errorMessageRead" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <form id="readPolicyForm">
+        <label for="policyId">Policy ID:</label>
+        <input type="text" id="policyId" name="policyId" required><br><br>
+        <button type="submit">Read Policy</button>
+    </form>
+    <div id="readPolicyResult"></div>
+
+    <h2>Update Policy</h2>
+    <div id="errorMessageUpdate" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <form id="updatePolicyForm">
+        <label for="updatePolicyId">Policy ID:</label>
+        <input type="text" id="updatePolicyId" name="updatePolicyId" required><br><br>
+        <label for="updateName">New Name:</label>
+        <input type="text" id="updateName" name="updateName" required><br><br>
+        <label for="updateDescription">New Description:</label>
+        <input type="text" id="updateDescription" name="updateDescription" required><br><br>
+        <label for="updateType">New Type:</label>
+        <input type="text" id="updateType" name="updateType" required><br><br>
+        <button type="submit">Update Policy</button>
+    </form>
+
+    <h2>Delete Policy</h2>
+    <div id="errorMessageDelete" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <form id="deletePolicyForm">
+        <label for="deletePolicyId">Policy ID:</label>
+        <input type="text" id="deletePolicyId" name="deletePolicyId" required><br><br>
+        <button type="submit">Delete Policy</button>
+    </form>
+
+    <h2>Create Rule</h2>
+    <div id="errorMessageCreateRule" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <form id="createRuleForm">
+        <label for="policyIdcreaterule">Policy ID:</label>
+        <input type="text" id="policyIdcreaterule" name="policyIdcreaterule" required>
+        <button type="button" id="checkPolicyBtn">Check</button><br><br>
+
+        <!-- Additional fields for Arupa -->
+        <div id="arupaFields" style="display: none;">
+            <label for="nameCreateRule">Name:</label>
+            <input type="text" id="nameCreateRule" name="nameCreateRule"><br><br>
+            <label for="ip_proto">IP Protocol:</label>
+            <input type="text" id="ip_proto" name="ip_proto"><br><br>
+            <label for="source_port">Source Port:</label>
+            <input type="text" id="source_port" name="source_port"><br><br>
+            <label for="source_subnet">Source Subnet:</label>
+            <input type="text" id="source_subnet" name="source_subnet"><br><br>
+        </div>
+
+        <!-- Additional fields for Frisco -->
+        <div id="friscoFields" style="display: none;">
+            <label for="nameCreateRule">Name:</label>
+            <input type="text" id="nameCreateRule" name="nameCreateRule"><br><br>
+            <label for="ip_proto">IP Protocol:</label>
+            <input type="text" id="ip_proto" name="ip_proto"><br><br>
+            <label for="source_port">Source Port:</label>
+            <input type="text" id="source_port" name="source_port"><br><br>
+            <label for="source_ip">Source IP:</label>
+            <input type="text" id="source_ip" name="source_ip"><br><br>
+            <label for="destination_ip">Destination IP:</label>
+            <input type="text" id="destination_ip" name="destination_ip"><br><br>
+        </div>
+
+        <button type="submit">Create Rule</button>
+    </form>
+
+    <h2>Read Rule</h2>
+    <div id="errorMessageReadRule" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <form id="readRuleForm">
+        <label for="policyIdreadrule">Policy ID:</label>
+        <input type="text" id="policyIdreadrule" name="policyIdreadrule" required><br><br>
+        <label for="ruleId">Rule ID:</label>
+        <input type="text" id="ruleId" name="ruleId" required><br><br>
+        <button type="submit">Read Rule</button>
+    </form>
+    <div id="readRuleResult"></div>
+    
+    <h2>Update Rule</h2>
+    <div id="errorMessageUpdateRule" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <form id="updateRuleForm">
+        <label for="policyIdupdaterule">Policy ID:</label>
+        <input type="text" id="policyIdupdaterule" name="policyIdupdaterule" required><br><br>
+        <label for="ruleIdupdaterule">Rule ID:</label>
+        <input type="text" id="ruleIdupdaterule" name="ruleIdupdaterule" required><br><br>
+        <button type="button" id="checkPolicyUpdateBtn">Check</button><br><br>
+
+
+    <!-- Additional fields for Arupa -->
+        <div id="arupaFields_update" style="display: none;">
+            <label for="nameUpdateRule">Name:</label>
+            <input type="text" id="nameUpdateRule" name="nameUpdateRule"><br><br>
+            <label for="ip_proto_update">IP Protocol:</label>
+            <input type="text" id="ip_proto_update" name="ip_proto_update"><br><br>
+            <label for="source_port_update">Source Port:</label>
+            <input type="text" id="source_port_update" name="source_port_update"><br><br>
+            <label for="source_subnet_update">Source Subnet:</label>
+            <input type="text" id="source_subnet_update" name="source_subnet_update"><br><br>
+            <button type="submit">Update Rule</button>
+        </div>
+
+        <!-- Additional fields for Frisco -->
+        <div id="friscoFields_update" style="display: none;">
+            <label for="nameUpdateRule">Name:</label>
+            <input type="text" id="nameUpdateRule" name="nameUpdateRule"><br><br>
+            <label for="ip_proto_update">IP Protocol:</label>
+            <input type="text" id="ip_proto_update" name="ip_proto_update"><br><br>
+            <label for="source_port_update">Source Port:</label>
+            <input type="text" id="source_port_update" name="source_port_update"><br><br>
+            <label for="source_ip_update">Source IP:</label>
+            <input type="text" id="source_ip_update" name="source_ip_update"><br><br>
+            <label for="destination_ip_update">Destination IP:</label>
+            <input type="text" id="destination_ip_update" name="destination_ip_update"><br><br>
+            <button type="submit">Update Rule</button>
+        </div>
+    </form>
+
+    <h2>Delete Rule</h2>
+    <div id="errorMessageDeleteRule" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <form id="deleteRuleForm">
+        <label for="policyIdDeleteRule">Policy ID:</label>
+        <input type="text" id="policyIdDeleteRule" name="policyIdDeleteRule" required><br><br>
+        <label for="ruleIdDeleteRule">Rule ID:</label>
+        <input type="text" id="ruleIdDeleteRule" name="ruleIdDeleteRule" required><br><br>
+        <button type="submit">Delete Policy</button>
+    </form>
+
+    <h2>List Rules</h2>
+    <div id="errorMessageListRules" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <form id="ListRulesForm">
+        <label for="policyIdListRules">Policy ID:</label>
+        <input type="text" id="policyIdListRules" name="policyIdListRules" required><br><br>
+        <button id="listRulesBtn">List Rules</button>
+    </form>
+    <ul id="rulesList"></ul>
+
+    <script>
+        document.getElementById('createPolicyForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const type = document.getElementById('type').value;
+            const response = await fetch('/create_policy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    description: description,
+                    type: type
+                })
+            });
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                document.getElementById('errorMessageCreate').textContent = 'Error: ' + errorMessage;
+                return; // Stop further execution
+            }
+            const data = await response.json();
+            alert('Policy created with ID: ' + data.policy_id);
+            document.getElementById('name').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('type').value = '';
+            document.getElementById('errorMessageCreate').textContent = ''; // Clear error message
+        });
+
+        document.getElementById('listPoliciesBtn').addEventListener('click', async function() {
+            const response = await fetch('/list_policies');
+            if (!response.ok) {
+                document.getElementById('policyList').innerHTML = '';
+                const errorMessage = await response.text();
+                document.getElementById('errorMessagelist').textContent = 'Error: ' + errorMessage;
+                return; // Stop further execution
+            }
+            const policies = await response.json();
+            const policyList = document.getElementById('policyList');
+            policyList.innerHTML = '';
+            policies.forEach(policy => {
+                const li = document.createElement('li');
+                li.textContent = `ID: ${policy.id}, Name: ${policy.name}, Description: ${policy.description}, Type: ${policy.type}, Rules: ${policy.rules.length}`;
+                policyList.appendChild(li);
+            });
+            document.getElementById('errorMessagelist').textContent = ''; // Clear error message           
+        });
+
+        document.getElementById('readPolicyForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const policyId = document.getElementById('policyId').value;
+            const response = await fetch(`/read_policy?id=${policyId}`);
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                document.getElementById('errorMessageRead').textContent = 'Error: ' + errorMessage;
+                document.getElementById('readPolicyResult').textContent = ''; // Clear read policy result
+                return; // Stop further execution
+            }
+            const policy = await response.json();
+            document.getElementById('readPolicyResult').textContent = `ID: ${policy.id}, Name: ${policy.name}, Description: ${policy.description}, Type: ${policy.type}, Rules: `;
+            // Iterate over the rules array and concatenate each rule's properties
+            policy.rules.forEach(rule => {
+                if (policy.type.toLowerCase() === 'arupa') {
+                    document.getElementById('readPolicyResult').textContent += `\n[ Rule ID: ${rule.id}, Name: ${rule.name}, IP Proto: ${rule.ip_proto}, Source Port: ${rule.source_port}, Source Subnet: ${rule.source_subnet} ]` ;
+                } else if (policy.type.toLowerCase() === 'frisco'){
+                    document.getElementById('readPolicyResult').textContent += `\n[ Rule ID: ${rule.id}, Name: ${rule.name}, IP Proto: ${rule.ip_proto}, Source Port: ${rule.source_port}, Source IP:  ${rule.source_ip}, Destination IP: ${rule.destination_ip} ]` ;
+                }
+            });
+            document.getElementById('errorMessageRead').textContent = ''; // Clear error message
+        });
+
+        document.getElementById('updatePolicyForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const policyId = document.getElementById('updatePolicyId').value;
+            const newName = document.getElementById('updateName').value;
+            const newDescription = document.getElementById('updateDescription').value;
+            const newType = document.getElementById('updateType').value;
+            const response = await fetch(`/update_policy?id=${policyId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: newName,
+                    description: newDescription,
+                    type: newType
+                })
+            });
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                document.getElementById('errorMessageUpdate').textContent = 'Error: ' + errorMessage;
+                return; // Stop further execution
+            }
+            alert('Policy updated successfully');
+            document.getElementById('updatePolicyId').value = '';
+            document.getElementById('updateName').value = '';
+            document.getElementById('updateDescription').value = '';
+            document.getElementById('updateType').value = '';
+            document.getElementById('errorMessageUpdate').textContent = ''; // Clear error message
+        });
+
+        document.getElementById('deletePolicyForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const policyId = document.getElementById('deletePolicyId').value;
+            const response = await fetch(`/delete_policy?id=${policyId}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                document.getElementById('errorMessageDelete').textContent = 'Error: ' + errorMessage;
+                return; // Stop further execution
+            }
+            alert('Policy deleted successfully');
+            document.getElementById('deletePolicyId').value = '';
+            document.getElementById('errorMessageDelete').textContent = ''; //
+        });
+
+        document.getElementById('checkPolicyBtn').addEventListener('click', async function() {
+        const policyId = document.getElementById('policyIdcreaterule').value;
+        const response = await fetch(`/read_policy?id=${policyId}`);
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            document.getElementById('errorMessageCreateRule').textContent = 'Error: ' + errorMessage;
+            return; // Stop further execution
+        }
+        const policy = await response.json();
+        document.getElementById('type').value = policy.type;
+        document.getElementById('errorMessageCreateRule').textContent = ''; // Clear error message
+
+        // Show additional fields based on policy type
+        if (policy.type.toLowerCase() === 'arupa') {
+            document.getElementById('arupaFields').style.display = 'block';
+            document.getElementById('friscoFields').style.display = 'none';
+            // Set required attribute for Arupa fields
+            document.getElementById('nameCreateRule').setAttribute('required', '');
+            document.getElementById('ip_proto').setAttribute('required', '');
+            document.getElementById('source_port').setAttribute('required', '');
+            document.getElementById('source_subnet').setAttribute('required', '');
+            // Remove required attribute for Frisco fields
+            document.getElementById('source_ip').removeAttribute('required');
+            document.getElementById('destination_ip').removeAttribute('required');
+        } else if (policy.type.toLowerCase() === 'frisco') {
+            document.getElementById('friscoFields').style.display = 'block';
+            document.getElementById('arupaFields').style.display = 'none';
+            // Set required attribute for Frisco fields
+            document.getElementById('nameCreateRule').setAttribute('required', '');
+            document.getElementById('ip_proto').setAttribute('required', '');
+            document.getElementById('source_port').setAttribute('required', '');
+            document.getElementById('source_ip').setAttribute('required', '');
+            document.getElementById('destination_ip').setAttribute('required', '');
+            // Remove required attribute for Arupa fields
+            document.getElementById('source_subnet').removeAttribute('required');
+        }
+
+        // Remove previous submit event listener to prevent multiple executions
+        document.getElementById('createRuleForm').removeEventListener('submit', createRuleHandler);
+
+        // Attach submit event listener
+        document.getElementById('createRuleForm').addEventListener('submit', createRuleHandler);
+    });
+
+    // Define the submit event handler separately
+    async function createRuleHandler(event) {
+        event.preventDefault();
+
+        const policyId = document.getElementById('policyIdcreaterule').value;
+        const response = await fetch(`/read_policy?id=${policyId}`);
+        const policy = await response.json(); // Reusing 'response' variable from the outer function
+        const type = policy.type; // Retrieve policy type
+        let additionalFields = {}; // Define additional fields object
+
+        // Get additional fields based on policy type
+        if (type.toLowerCase() === 'arupa') {
+            additionalFields = {
+                name: document.getElementById('nameCreateRule').value,
+                ip_proto: document.getElementById('ip_proto').value,
+                source_port: document.getElementById('source_port').value,
+                source_subnet: document.getElementById('source_subnet').value
+            };
+        } else if (type.toLowerCase() === 'frisco') {
+            additionalFields = {
+                name: document.getElementById('nameCreateRule').value,
+                ip_proto: document.getElementById('ip_proto').value,
+                source_port: document.getElementById('source_port').value,
+                source_ip: document.getElementById('source_ip').value,
+                destination_ip: document.getElementById('destination_ip').value
+            };
+        }
+
+        // Send the request to create the rule
+        const createRuleResponse = await fetch('/create_rule', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                policy_id: policyId,
+                rule_input: additionalFields
+            })
+        });
+
+        if (!createRuleResponse.ok) {
+            const errorMessage = await createRuleResponse.text();
+            document.getElementById('errorMessageCreateRule').textContent = 'Error: ' + errorMessage;
+            return; // Stop further execution
+        }
+        alert('Rule created successfully');
+        document.getElementById('policyId').value = '';
+        document.getElementById('nameCreateRule').value = '';
+        document.getElementById('ip_proto').value = '';
+        document.getElementById('source_port').value = '';
+        document.getElementById('source_subnet').value = '';
+        document.getElementById('source_ip').value = '';
+        document.getElementById('destination_ip').value = '';
+        document.getElementById('errorMessageCreateRule').textContent = ''; // Clear error message
+
+    };
+
+        document.getElementById('readRuleForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const policyId = document.getElementById('policyIdreadrule').value;
+        const ruleId = document.getElementById('ruleId').value;
+        const response = await fetch(`/read_rule?policy_id=${policyId}&rule_id=${ruleId}`);
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            document.getElementById('errorMessageReadRule').textContent = 'Error: ' + errorMessage;
+            document.getElementById('readRuleResult').innerHTML = '';
+            return; // Stop further execution
+        }
+        const ruleData = await response.json();
+        document.getElementById('readRuleResult').textContent = JSON.stringify(ruleData, null, 2);
+        document.getElementById('errorMessageReadRule').textContent = ''; // Clear error message
+        });
+
+
+        document.getElementById('checkPolicyUpdateBtn').addEventListener('click', async function() {
+        event.preventDefault();
+        const policyId = document.getElementById('policyIdupdaterule').value;
+        const ruleId = document.getElementById('ruleIdupdaterule').value;
+        const response = await fetch(`/read_rule?policy_id=${policyId}&rule_id=${ruleId}`);
+        const rule = await response.json();
+        console.log(rule)
+        
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            document.getElementById('errorMessageUpdateRule').textContent = 'Error: ' + errorMessage;
+            return; // Stop further execution
+        }
+        
+        // Show additional fields based on rule attributes
+        if (rule.hasOwnProperty('source_subnet')) {
+            console.log("here here")
+            document.getElementById('arupaFields_update').style.display = 'block';
+            document.getElementById('friscoFields_update').style.display = 'none';
+            // Set required attribute for Arupa fields
+            document.getElementById('nameCreateRule').setAttribute('required', '');
+            document.getElementById('ip_proto_update').setAttribute('required', '');
+            document.getElementById('source_port_update').setAttribute('required', '');
+            document.getElementById('source_subnet_update').setAttribute('required', '');
+            // Remove required attribute for Frisco fields
+            document.getElementById('source_ip_update').removeAttribute('required');
+            document.getElementById('destination_ip_update').removeAttribute('required');
+        } else if (rule.hasOwnProperty('source_ip')) {
+            document.getElementById('friscoFields_update').style.display = 'block';
+            document.getElementById('arupaFields_update').style.display = 'none';
+            // Set required attribute for Frisco fields
+            document.getElementById('nameCreateRule').setAttribute('required', '');
+            document.getElementById('ip_proto_update').setAttribute('required', '');
+            document.getElementById('source_port_update').setAttribute('required', '');
+            document.getElementById('source_ip_update').setAttribute('required', '');
+            document.getElementById('destination_ip_update').setAttribute('required', '');
+            // Remove required attribute for Arupa fields
+            document.getElementById('source_subnet_update').removeAttribute('required');
+        }
+
+        document.getElementById('updateRuleForm').removeEventListener('submit', updateRuleHandler);
+
+        // Attach submit event listener
+        document.getElementById('updateRuleForm').addEventListener('submit', updateRuleHandler);
+        document.getElementById('errorMessageUpdateule').textContent = '';
+        });
+        async function updateRuleHandler(event) {
+
+
+        event.preventDefault();
+
+        const policyId = document.getElementById('policyIdupdaterule').value;
+        const response = await fetch(`/read_policy?id=${policyId}`);
+        const policy = await response.json(); 
+        const type = policy.type; 
+        let additionalFields = {}; 
+
+        // Get additional fields based on policy type
+        if (type.toLowerCase() === 'arupa') {
+            additionalFields = {
+                name: document.getElementById('nameUpdateRule').value,
+                ip_proto: document.getElementById('ip_proto_update').value,
+                source_port: document.getElementById('source_port_update').value,
+                source_subnet: document.getElementById('source_subnet_update').value
+            };
+        } else if (type.toLowerCase() === 'frisco') {
+            additionalFields = {
+                name: document.getElementById('nameUpdateRule').value,
+                ip_proto: document.getElementById('ip_proto_update').value,
+                source_port: document.getElementById('source_port_update').value,
+                source_ip: document.getElementById('source_ip_update').value,
+                destination_ip: document.getElementById('destination_ip_update').value
+            };
+        }
+
+        // Send the request to update the rule
+        const updateRuleResponse = await fetch(`/update_rule?policy_id=${policyId}&rule_id=${document.getElementById('ruleIdupdaterule').value}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                rule_input: additionalFields
+            })
+        });
+
+        if (!updateRuleResponse.ok) {
+            const errorMessage = await updateRuleResponse.text();
+            document.getElementById('errorMessageUpdateRule').textContent = 'Error: ' + errorMessage;
+            return; // Stop further execution
+        }
+        
+        alert('Rule updated successfully');
+        document.getElementById('policyIdupdaterule').value = '';
+        document.getElementById('ruleIdupdaterule').value = '';
+        document.getElementById('nameUpdateRule').value = '';
+        document.getElementById('ip_proto_update').value = '';
+        document.getElementById('source_port_update').value = '';
+        document.getElementById('source_subnet_update').value = '';
+        document.getElementById('source_ip_update').value = '';
+        document.getElementById('destination_ip_update').value = '';
+        document.getElementById('errorMessageUpdateule').textContent = ''; // Clear error message
+    }
+
+        document.getElementById('deleteRuleForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const policyId = document.getElementById('policyIdDeleteRule').value;
+        const ruleId = document.getElementById('ruleIdDeleteRule').value;
+        const response = await fetch(`/delete_rule?policy_id=${policyId}&rule_id=${ruleId}`, {
+            method: 'DELETE'
+        });
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            document.getElementById('errorMessageDeleteRule').textContent = 'Error: ' + errorMessage;
+            return; // Stop further execution
+        }
+        alert('Policy deleted successfully');
+        document.getElementById('policyIdDeleteRule').value = '';
+        document.getElementById('ruleIdDeleteRule').value = '';
+        document.getElementById('errorMessageDeleteRule').textContent = ''; //
+    });
+
+
+        document.getElementById('listRulesBtn').addEventListener('click', async function() {
+        event.preventDefault();
+        policyId = document.getElementById("policyIdListRules").value;
+        const response = await fetch(`/list_rules?policy_id=${policyId}`);
+        if (!response.ok) {
+            document.getElementById('rulesList').innerHTML = '';
+            const errorMessage = await response.text();
+            document.getElementById('errorMessageListRules').textContent = 'Error: ' + errorMessage;
+            return; // Stop further execution
+        }
+        const rules = await response.json();
+        const ruleList = document.getElementById('rulesList');
+        ruleList.innerHTML = '';
+        console.log(rules)
+        rules.forEach(rule => {
+            const li = document.createElement('li');
+            if (rule.hasOwnProperty('source_subnet')) {
+                li.textContent =  `Rule ID: ${rule.id}, Name: ${rule.name}, IP Proto: ${rule.ip_proto}, Source Port: ${rule.source_port}, Source Subnet: ${rule.source_subnet} ` ;
+            } else if (rule.hasOwnProperty('source_ip')){
+                li.textContent =  `[ Rule ID: ${rule.id}, Name: ${rule.name}, IP Proto: ${rule.ip_proto}, Source Port: ${rule.source_port}, Source IP:  ${rule.source_ip}, Destination IP: ${rule.destination_ip}` ;
+            }
+            
+            ruleList.appendChild(li);
+        });
+        document.getElementById('errorMessageListRules').textContent = ''; // Clear error message           
+    });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy API Test</title>
+</head>
+<body>
+    <h1>Policy API Test</h1>
+    <h2>Create Policy</h2>
+    <div id="errorMessage" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <form id="createPolicyForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" required><br><br>
+        <button type="submit">Create Policy</button>
+    </form>
+
+    <h2>List Policies</h2>
+    <div id="errorMessagelist" style="color: red; font-weight: bold;"></div> <!-- Error message container -->
+    <button id="listPoliciesBtn">List Policies</button>
+    <ul id="policyList"></ul>
+
+    <script>
+        document.getElementById('createPolicyForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const response = await fetch('/create_policy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    description: description
+                })
+            });
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                document.getElementById('errorMessage').textContent = 'Error: ' + errorMessage;
+                return; // Stop further execution
+            }
+            const data = await response.json();
+            alert('Policy created with ID: ' + data.policy_id);
+            document.getElementById('name').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('errorMessage').textContent = ''; // Clear error message
+        });
+
+        document.getElementById('listPoliciesBtn').addEventListener('click', async function() {
+            const response = await fetch('/list_policies');
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                document.getElementById('errorMessagelist').textContent = 'Error: ' + errorMessage;
+                return; // Stop further execution
+            }
+            const policies = await response.json();
+            const policyList = document.getElementById('policyList');
+            policyList.innerHTML = '';
+            policies.forEach(policy => {
+                const li = document.createElement('li');
+                li.textContent = `ID: ${policy.id}, Name: ${policy.name}, Description: ${policy.description}`;
+                policyList.appendChild(li);
+            });
+            document.getElementById('errorMessagelist').textContent = ''; // Clear error message
+        });
+    </script>
+</body>
+</html>
